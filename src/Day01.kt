@@ -1,4 +1,5 @@
 /**
+ *
  * --- Day 1: Sonar Sweep ---
 You're minding your own business on a ship at sea when the overboard alarm goes off! You rush to see if you can help. Apparently, one of the Elves tripped and accidentally sent the sleigh keys flying into the ocean!
 
@@ -42,8 +43,9 @@ In this example, there are 7 measurements that are larger than the previous meas
 
 How many measurements are larger than the previous measurement?
 
---- Part Two ---
+Your puzzle answer was 1502.
 
+--- Part Two ---
 Considering every single measurement isn't as useful as you expected: there's just too much noise in the data.
 
 Instead, consider sums of a three-measurement sliding window. Again considering the above example:
@@ -75,17 +77,37 @@ H: 792 (increased)
 In this example, there are 5 sums that are larger than the previous sum.
 
 Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?
+
+Your puzzle answer was 1538.
+
+Both parts of this puzzle are complete! They provide two gold stars: **
  */
 
 var previous = 0 ;
 var measurementIncreased =0;
 
 fun main() {
-
+    // Sample Input
+    val sample = readInputAsInts("sample_input_day_01")
+    // For puzzle inputs
     val input = readInputAsInts("day_1_input")
-    input.forEach { checkdepth(it) }
 
-    println("Measurement Increased : $measurementIncreased")
+    println("Solutions for Sample and input")
+    process(sample)
+    process(input)
+
+    // Optimized Solutions
+    println("Optimized Solutions for Sample and input")
+    println(part01(sample))
+    println(part02(sample))
+
+    println(part01(input))
+    println(part02(input))
+}
+
+fun process(input: List<Int>){
+    input.forEach { checkdepth(it) }
+    println("$measurementIncreased")
 
     val triple = input.windowed(3,1,true)
     val list: MutableList<Int> = ArrayList()
@@ -105,8 +127,8 @@ fun main() {
     list.forEach {
         checkdepth(it)
     }
-    println("Measurement Increased : $measurementIncreased")}
-
+    println("$measurementIncreased")
+}
 
 fun checkdepth(depth:Int){
     if(previous != 0){
@@ -115,4 +137,14 @@ fun checkdepth(depth:Int){
         }
     }
     previous = depth;
+}
+
+// Optimized Solution for the puzzle
+fun part01(input: List<Int>): Int {
+    return input.windowed(2).count{(a,b) -> a < b}
+}
+
+// A+B+C <=> B+C+D
+fun part02(input: List<Int>): Int {
+    return input.windowed(4).count{it[0] < it[3]}
 }
